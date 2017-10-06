@@ -24,15 +24,18 @@ class Wizard extends Component {
   } 
 
   render() {
+    const { children } = this.props;
+
     return (
       <div>
         <div onClick={() => this.pageDown()}>Right</div>
         <div>
-          {this.props.children[this.state.page]}
+          {children[this.state.page]}
         </div>
         <div onClick={() => this.pageUp()}>Left</div>
       </div>
     );
+
   }
 }
 

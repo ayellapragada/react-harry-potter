@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 class Input extends Component {
   constructor(props) {
     super(props);
-    this.state = {...props.state, input: ""};
+    this.state = { input: ""};
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.name !== nextProps.name) {
+    if (this.props.screen !== nextProps.screen) {
       this.setState({ input: "" });
     }
   } 
