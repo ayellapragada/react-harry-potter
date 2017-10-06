@@ -6,9 +6,11 @@ class Input extends Component {
     this.state = {...props.state, input: ""};
   }
 
-  componentWillUnmount() {
-    this.props.saveState(this.state);
-  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.name !== nextProps.name) {
+      this.setState({ input: "" });
+    }
+  } 
 
   changeInput(e) {
     this.setState({ input: e.currentTarget.value });
