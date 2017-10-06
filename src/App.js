@@ -9,10 +9,10 @@ class App extends Component {
     return (
       <div>
         <Wizard>
-          <Step><Input num={0}/></Step>
-          <Step><Input num={1}/></Step>
-          <Step><Input num={2}/></Step>
-          <Step><Input num={3}/></Step>
+          <Step name="zero"><Input num={0}/></Step>
+          <Step name="one"><Input num={1}/></Step>
+          <Step name="two"><Input num={2}/></Step>
+          <Step name="three"><Input num={3}/></Step>
         </Wizard>
       </div>
     );

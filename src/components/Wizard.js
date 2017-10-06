@@ -17,7 +17,6 @@ class Wizard extends Component {
 
   pageDown() {
     const { page } = this.state;
-    const { children } = this.props;
 
     if (page > 0 ) {
       this.setState({ page: this.state.page - 1 });

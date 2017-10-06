@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 class Input extends Component {
   constructor(props) {
     super(props);
-    this.state = { input: "" };
+    this.state = {...props.state, input: ""};
+  }
+
+  componentWillUnmount() {
+    this.props.saveState(this.state);
   }
 
   changeInput(e) {
