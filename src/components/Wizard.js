@@ -28,15 +28,22 @@ class Wizard extends Component {
 
     return (
       <div>
-        <div onClick={() => this.pageDown()}>Right</div>
         <div>
           {children[this.state.page]}
         </div>
-        <div onClick={() => this.pageUp()}>Left</div>
+        <div style={buttonStyle}>
+          <div onClick={() => this.pageDown()}>Previous</div>
+          <div onClick={() => this.pageUp()}>Next</div>
+        </div>
       </div>
     );
 
   }
 }
+
+
+const buttonStyle = {
+  display: 'flex',
+};
 
 export default Wizard;
