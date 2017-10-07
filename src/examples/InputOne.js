@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import Persist from '../components/Persist.js';
 
-class Input extends Component {
+class InputOne extends Component {
   constructor(props) {
     super(props);
     this.state = { input: ""};
@@ -19,7 +20,7 @@ class Input extends Component {
   render() {
     return (
       <div>
-        {this.props.num}
+        One
         <input 
           type="text" 
           value={this.state.input} 
@@ -30,4 +31,4 @@ class Input extends Component {
   }
 }
 
-export default Input;
+export default Persist(InputOne);
