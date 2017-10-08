@@ -8,7 +8,7 @@ import InputThree from './examples/InputThree.js';
 class App extends Component {
   render() {
     return (
-      <Wizard>
+      <Wizard start={2}>
         <InputOne />
         <InputTwo />
         <InputThree />
