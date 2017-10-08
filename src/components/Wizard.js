@@ -17,6 +17,7 @@ class Wizard extends Component {
     this.allow = this.allow.bind(this);
     this.deny = this.deny.bind(this);
     this.jump = this.jump.bind(this);
+    this.getAllData = this.getAllData.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -72,7 +73,7 @@ class Wizard extends Component {
 
   getAllData() {
     const returnObj = {};
-    this.props.children.eachDo(child => {
+    this.props.children.forEach(child => {
       const key = child.type.displayName;
       const value = sessionStorage.getItem( key );
 
@@ -127,8 +128,7 @@ class Wizard extends Component {
           {React.cloneElement(children[page], { nav })}
         </div>
         { showProgress && <div> Step {page + 1} of {children.length}.</div> }
-        <div style={buttonStyle}>
-
+        <div style={navigationBtnContainerStyle}>
           <button 
             type="button" 
             onClick={() => this.pageBack()}
@@ -159,7 +159,7 @@ Wizard.propTypes = {
 };
 
 
-const buttonStyle = {
+const navigationBtnContainerStyle = {
   display: 'flex',
 };
 
