@@ -5,6 +5,7 @@ class InputOne extends Component {
   constructor(props) {
     super(props);
     this.state = { input: ""};
+    this.props.nav.allow();
   }
 
   componentWillReceiveProps(nextProps) {
