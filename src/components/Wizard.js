@@ -70,18 +70,23 @@ class Wizard extends Component {
     this.setState({ page: index });
   }
 
-  handleSubmit() {
+  getAllData() {
     const returnObj = {};
-    this.props.children.map(child => {
+    this.props.children.eachDo(child => {
       const key = child.type.displayName;
       const value = sessionStorage.getItem( key );
 
       returnObj[key] = value;
-      return null;
     });
 
+    return returnObj;
+  }
+
+  handleSubmit() {
+    const data = this.getAllData();
+
     this.setState({ submitted: true });
-    return this.props.onComplete(returnObj);
+    return this.props.onComplete(data);
   }
 
   renderNextOrSubmit() {
@@ -108,9 +113,9 @@ class Wizard extends Component {
   render() {
     const { children, showProgress, onCompleteText } = this.props;
     const { prev, page, submitted } = this.state;
-    const { allow, deny, jump } = this;
+    const { allow, deny, jump, getAllData } = this;
 
-    const nav = { allow, deny, jump };
+    const nav = { allow, deny, jump, getAllData };
 
     if (submitted) {
       return <div>{onCompleteText}</div>;
