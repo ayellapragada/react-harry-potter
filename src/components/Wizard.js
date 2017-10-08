@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
-
-import Persist from './Persist';
+import PropTypes from 'prop-types';
+// import Persist from './Persist';
 
 class Wizard extends Component {
   constructor(props) {
     super(props);
     const { start } = this.props;
-    this.state = { page: start || 0, prev: false, next: false };
+
+    this.state = { 
+      page: start, 
+      prev: false, 
+      next: false, 
+      submitted: false 
+    };
 
     this.allow = this.allow.bind(this);
     this.deny = this.deny.bind(this);
+    this.jump = this.jump.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -23,7 +30,7 @@ class Wizard extends Component {
   componentDidMount() {
     const { page, prev } = this.state;
 
-    if ( this.page !== 0 && prev === false ) {
+    if ( page !== 0 && prev === false ) {
       this.setState({ prev: true });
     }
   }
@@ -33,7 +40,7 @@ class Wizard extends Component {
     const { children } = this.props;
 
     if (page < children.length - 1) {
-      this.setState({ page: this.state.page + 1, next: false, prev: true });
+      this.setState({ page: page + 1, next: false, prev: true });
     }
   }
 
@@ -41,7 +48,7 @@ class Wizard extends Component {
     const { page } = this.state;
 
     if (page > 0 ) {
-      this.setState({ page: this.state.page - 1, next: true });
+      this.setState({ page: page - 1, next: true });
     }
   } 
 
@@ -53,6 +60,16 @@ class Wizard extends Component {
     this.setState({ next: false });
   }
 
+  jump(name) {
+    // EXPERIMENTAL. Dangerous, need to worry about jumping back and forth and
+    // handling button disabling.
+
+    const { children } = this.props;
+    const index = children.findIndex(child => child.type.displayName === name);
+
+    this.setState({ page: index });
+  }
+
   handleSubmit() {
     const returnObj = {};
     this.props.children.map(child => {
@@ -60,8 +77,10 @@ class Wizard extends Component {
       const value = sessionStorage.getItem( key );
 
       returnObj[key] = value;
+      return null;
     });
 
+    this.setState({ submitted: true });
     return this.props.onComplete(returnObj);
   }
 
@@ -71,12 +90,12 @@ class Wizard extends Component {
 
     return page === (children.length - 1) 
       ? <button 
-          type="submit"
-          disabled={!next}
-          onClick={() => this.handleSubmit()}
-        >
-          Finish!
-        </button>
+        type="submit"
+        disabled={!next}
+        onClick={() => this.handleSubmit()}
+      >
+        Finish!
+      </button>
       : <button 
         type="button" 
         disabled={!next}
@@ -87,16 +106,22 @@ class Wizard extends Component {
   }
 
   render() {
-    const { children } = this.props;
-    const { prev, next, page } = this.state;
+    const { children, showProgress, onCompleteText } = this.props;
+    const { prev, page, submitted } = this.state;
+    const { allow, deny, jump } = this;
 
-    const nav = { allow: this.allow, deny: this.deny };
+    const nav = { allow, deny, jump };
+
+    if (submitted) {
+      return <div>{onCompleteText}</div>;
+    }
 
     return (
       <div>
         <div>
           {React.cloneElement(children[page], { nav })}
         </div>
+        { showProgress && <div> Step {page + 1} of {children.length}.</div> }
         <div style={buttonStyle}>
 
           <button 
@@ -115,9 +140,23 @@ class Wizard extends Component {
   }
 }
 
+Wizard.defaultProps = {
+  start: 0,
+  showProgress: false,
+  onCompleteText: 'Thanks for submitting!',
+};
+
+Wizard.propTypes = {
+  onComplete: PropTypes.func.isRequired,
+  start: PropTypes.number,
+  showProgress: PropTypes.bool,
+  onCompleteText: PropTypes.string,
+};
+
 
 const buttonStyle = {
   display: 'flex',
 };
 
-export default Persist(Wizard);
+// export default Persist(Wizard);
+export default Wizard;

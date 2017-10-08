@@ -5,6 +5,7 @@ class InputThree extends Component {
   constructor(props) {
     super(props);
     this.state = { input: ""};
+
     this.props.nav.allow();
   }
 
@@ -16,6 +17,7 @@ class InputThree extends Component {
 
   changeInput(e) {
     this.setState({ input: e.currentTarget.value });
+    this.props.nav.allow();
   }
 
   render() {

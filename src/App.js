@@ -14,9 +14,9 @@ class App extends Component {
   render() {
     return (
       <Wizard onComplete={this.handleComplete}>
+        <InputOne />
         <InputTwo />
         <InputThree />
-        <InputOne />
       </Wizard>
     );
   }
