@@ -6,12 +6,17 @@ import InputTwo from './examples/InputTwo.js';
 import InputThree from './examples/InputThree.js';
 
 class App extends Component {
+  handleComplete(data) {
+    console.log(data);
+  }
+
+
   render() {
     return (
-      <Wizard start={2}>
-        <InputOne />
+      <Wizard onComplete={this.handleComplete}>
         <InputTwo />
         <InputThree />
+        <InputOne />
       </Wizard>
     );
   }

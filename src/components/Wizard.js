@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 
+import Persist from './Persist';
+
 class Wizard extends Component {
   constructor(props) {
     super(props);
     const { start } = this.props;
     this.state = { page: start || 0, prev: false, next: false };
+
     this.allow = this.allow.bind(this);
     this.deny = this.deny.bind(this);
   }
@@ -59,7 +62,7 @@ class Wizard extends Component {
       returnObj[key] = value;
     });
 
-    return returnObj;
+    return this.props.onComplete(returnObj);
   }
 
   renderNextOrSubmit() {
@@ -117,4 +120,4 @@ const buttonStyle = {
   display: 'flex',
 };
 
-export default Wizard;
+export default Persist(Wizard);
