@@ -13,7 +13,9 @@ class App extends Component {
 
   render() {
     return (
-      <Wizard onComplete={this.handleComplete}>
+      <Wizard 
+        onComplete={this.handleComplete}
+      >
         <InputOne />
         <InputTwo />
         <InputThree />

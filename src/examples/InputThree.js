@@ -29,6 +29,9 @@ class InputThree extends Component {
           value={this.state.input} 
           onChange={(e) => this.changeInput(e)} 
         />
+        <button type="button" onClick={() => this.props.nav.jumpToIndex('1')}>
+          Jump to 2!
+        </button>
       </div>
     );
   }

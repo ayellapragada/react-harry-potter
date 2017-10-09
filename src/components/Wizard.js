@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import Persist from './Persist';
+
+import Persist from './Persist';
 
 class Wizard extends Component {
   constructor(props) {
@@ -11,12 +12,15 @@ class Wizard extends Component {
       page: start, 
       prev: false, 
       next: false, 
-      submitted: false 
+      completed: false 
     };
+
+    this.checkIfOnLastPage = this.checkIfOnLastPage.bind(this);
 
     this.allow = this.allow.bind(this);
     this.deny = this.deny.bind(this);
     this.jump = this.jump.bind(this);
+    this.jumpToIndex = this.jumpToIndex.bind(this);
     this.getAllData = this.getAllData.bind(this);
   }
 
@@ -53,23 +57,34 @@ class Wizard extends Component {
     }
   } 
 
-  allow() {
-    this.setState({ next: true });
+  handleKeyPress(e) {
+    if (!this.props.disallowEnterKey && e.key === 'Enter') {
+      if (this.checkIfOnLastPage()) {
+        this.handleSubmit();
+      }
+      this.pageNext();
+    }
   }
 
-  deny() {
-    this.setState({ next: false });
+  checkIfOnLastPage() {
+    return this.state.page === this.props.children.length - 1;
   }
+
+  allow() { this.setState({ next: true }); }
+  deny() { this.setState({ next: false }); }
+  allowBack() { this.setState({ prev: true }); }
+  denyBack() { this.setState({ prev: false }); }
+  jumpToIndex(idx) { this.setState({ page: Math.floor(idx) }); }
 
   jump(name) {
-    // EXPERIMENTAL. Dangerous, need to worry about jumping back and forth and
-    // handling button disabling.
-
+    // EXPERIMENTAL. Dangerous! 
+    // Need to worry about jumping back and forth and handling button disabling.
     const { children } = this.props;
     const index = children.findIndex(child => child.type.displayName === name);
 
     this.setState({ page: index });
   }
+
 
   getAllData() {
     const returnObj = {};
@@ -86,57 +101,85 @@ class Wizard extends Component {
   handleSubmit() {
     const data = this.getAllData();
 
-    this.setState({ submitted: true });
+    this.setState({ completed: true });
     return this.props.onComplete(data);
   }
 
   renderNextOrSubmit() {
-    const { page, next } = this.state;
-    const { children } = this.props;
+    const { next } = this.state;
+    const { nextButtonText, submitButtonText } = this.props;
 
-    return page === (children.length - 1) 
+    return this.checkIfOnLastPage()
       ? <button 
         type="submit"
         disabled={!next}
         onClick={() => this.handleSubmit()}
       >
-        Finish!
+        {submitButtonText}
       </button>
       : <button 
         type="button" 
         disabled={!next}
         onClick={() => this.pageNext()}
       >
-        Next
+        {nextButtonText}
       </button>;
   }
 
+  renderBack() {
+    const { prev } = this.state;
+    const { prevButtonText } = this.props;
+
+    return (
+      <button 
+        type="button" 
+        onClick={() => this.pageBack()}
+        disabled={!prev}
+      >
+        { prevButtonText }
+      </button>
+    );
+  }
+
+  renderTextProgressBar() {
+    const { page } = this.state;
+    const { children } = this.props;
+
+    return (
+      <div>
+        Step {page + 1} of {children.length}.
+      </div> 
+    );
+  }
+
   render() {
-    const { children, showProgress, onCompleteText } = this.props;
-    const { prev, page, submitted } = this.state;
-    const { allow, deny, jump, getAllData } = this;
+    const { children, showTextProgressBar, onCompleteText } = this.props;
+    const { page, completed } = this.state;
+    const { allow, deny, jump, jumpToIndex, getAllData, 
+      allowBack, denyBack } = this;
 
-    const nav = { allow, deny, jump, getAllData };
+    const nav = { 
+      allow, 
+      deny, 
+      jump, 
+      jumpToIndex,
+      getAllData, 
+      allowBack, 
+      denyBack 
+    };
 
-    if (submitted) {
+    if (completed) {
       return <div>{onCompleteText}</div>;
     }
 
     return (
-      <div>
+      <div onKeyPress={(e) => this.handleKeyPress(e)}>
         <div>
           {React.cloneElement(children[page], { nav })}
         </div>
-        { showProgress && <div> Step {page + 1} of {children.length}.</div> }
+        { showTextProgressBar && this.renderTextProgressBar() }
         <div style={navigationBtnContainerStyle}>
-          <button 
-            type="button" 
-            onClick={() => this.pageBack()}
-            disabled={!prev}
-          >
-            Previous
-          </button>
-
+          {this.renderBack()}
           {this.renderNextOrSubmit()}
         </div>
       </div>
@@ -147,15 +190,24 @@ class Wizard extends Component {
 
 Wizard.defaultProps = {
   start: 0,
-  showProgress: false,
-  onCompleteText: 'Thanks for submitting!',
+  showTextProgressBar: false,
+  disallowEnterKey: false,
+  onCompleteText: 'Thanks for completing!',
+  nextButtonText: 'Next',
+  prevButtonText: 'Prev',
+  submitButtonText: 'Submit',
 };
 
 Wizard.propTypes = {
   onComplete: PropTypes.func.isRequired,
+
   start: PropTypes.number,
-  showProgress: PropTypes.bool,
+  showTextProgressBar: PropTypes.bool,
   onCompleteText: PropTypes.string,
+  disallowEnterKey: PropTypes.bool,
+  nextButtonText: PropTypes.string,
+  prevButtonText:  PropTypes.string,
+  submitButtonText: PropTypes.string,
 };
 
 
@@ -163,5 +215,5 @@ const navigationBtnContainerStyle = {
   display: 'flex',
 };
 
-// export default Persist(Wizard);
+export const PersistedWizard = Persist(Wizard);
 export default Wizard;
