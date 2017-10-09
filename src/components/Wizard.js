@@ -27,7 +27,7 @@ class Wizard extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { page, prev } = this.state;
 
-    if (page === 0 && prev === true) {
+    if (page === 0 && prev) {
       this.setState({ prev: false });
     }
   }
@@ -56,15 +56,6 @@ class Wizard extends Component {
       this.setState({ page: page - 1, next: true });
     }
   } 
-
-  handleKeyPress(e) {
-    if (!this.props.disallowEnterKey && e.key === 'Enter') {
-      if (this.checkIfOnLastPage()) {
-        this.handleSubmit();
-      }
-      this.pageNext();
-    }
-  }
 
   checkIfOnLastPage() {
     return this.state.page === this.props.children.length - 1;
@@ -100,9 +91,15 @@ class Wizard extends Component {
 
   handleSubmit() {
     const data = this.getAllData();
-
     this.setState({ completed: true });
     return this.props.onComplete(data);
+  }
+
+  handleKeyPress(e) {
+    if (!this.props.disallowEnterKey && e.key === 'Enter') {
+      if (this.checkIfOnLastPage()) { this.handleSubmit(); } 
+      else { this.pageNext(); }
+    }
   }
 
   renderNextOrSubmit() {
@@ -145,7 +142,7 @@ class Wizard extends Component {
         onClick={() => this.pageBack()}
         disabled={!prev}
         style={{...buttonStyle, ...prevButtonStyle}}
-        className={`${buttonCls} ${prevButtonCls} `}
+        className={`${buttonCls} ${prevButtonCls}`}
       >
         { prevButtonText }
       </button>
@@ -163,9 +160,29 @@ class Wizard extends Component {
     );
   }
 
+  renderPercentageProgress() {
+    const { page } = this.state;
+    const { children, percentageProgressCls, 
+      percentageProgressStyle } = this.props;
+
+    let percentage = Math.floor((page / children.length) * 100);
+
+    return (
+      <progress 
+        style={percentageProgressStyle} 
+        className={percentageProgressCls}
+        value={percentage}
+        max={100}
+      >
+        { percentage }%
+      </progress>
+    );
+  }
+
   render() {
-    const { children, showTextProgressBar, onCompleteText,
-      buttonNavContainerCls, buttonNavContainerStyle } = this.props;
+    const { children, showTextProgressBar, showPercentageProgress,  
+      onCompleteText, buttonNavContainerCls, 
+      buttonNavContainerStyle } = this.props;
     const { page, completed } = this.state;
     const { allow, deny, jump, jumpToIndex, getAllData, 
       allowBack, denyBack } = this;
@@ -187,6 +204,7 @@ class Wizard extends Component {
     return (
       <div onKeyPress={(e) => this.handleKeyPress(e)}>
         {React.cloneElement(children[page], { nav })}
+        { showPercentageProgress && this.renderPercentageProgress() }
         { showTextProgressBar && this.renderTextProgressBar() }
         <div style={buttonNavContainerStyle} className={buttonNavContainerCls}>
           {this.renderBack()}
@@ -205,6 +223,7 @@ const navigationBtnContainerStyle = {
 Wizard.defaultProps = {
   start: 0,
   showTextProgressBar: false,
+  showPercentageProgress: false,
   disallowEnterKey: false,
   onCompleteText: 'Thanks for completing!',
   nextButtonText: 'Next',
@@ -218,6 +237,7 @@ Wizard.propTypes = {
 
   start: PropTypes.number,
   showTextProgressBar: PropTypes.bool,
+  showPercentageProgress: PropTypes.bool,
   onCompleteText: PropTypes.string,
   disallowEnterKey: PropTypes.bool,
   nextButtonText: PropTypes.string,
@@ -231,6 +251,7 @@ Wizard.propTypes = {
   nextButtonStyle: PropTypes.object,
   submitButtonStyle: PropTypes.object,
   textProgressStyle: PropTypes.object,
+  percentageProgressStyle: PropTypes.object,
 
   containerCls: PropTypes.string,
   buttonNavContainerCls: PropTypes.string,
@@ -239,6 +260,7 @@ Wizard.propTypes = {
   nextButtonCls: PropTypes.string,
   submitButtonCls: PropTypes.string,
   textProgressCls: PropTypes.string,
+  percentageProgressCls: PropTypes.string,
 };
 
 export const PersistedWizard = Persist(Wizard);
