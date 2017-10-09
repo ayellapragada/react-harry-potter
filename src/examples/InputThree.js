@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Persist from '../components/Persist.js';
+import { withPersist } from '../components/';
 
 class InputThree extends Component {
   constructor(props) {
@@ -37,4 +37,4 @@ class InputThree extends Component {
   }
 }
 
-export default Persist(InputThree);
+export default withPersist(InputThree);
