@@ -1,6 +1,6 @@
 {
   "name": "react-harry-potter",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "dependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
