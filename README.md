@@ -142,6 +142,9 @@ Show progress html element that uses the percentage completed so far.
 #### `disallowEnterKey`: bool, default: false
 Deny user the ability to press enter to try to move up in the Wizard.
 
+#### `clearOnClose`: bool, default: false
+Should wizard clear it's state and all children state when closed?
+
 #### `onCompleteText`: string, default: 'Thanks for completing!',
 What to render once the user has finished the wizard.
 
@@ -216,7 +219,15 @@ to move on immediately in case of optional fields.
 - Potentially more dangerous than jump, since this can't account for screen
   reorders.
 
+#### `reset`:
+- Reset the state of the wizard, back to start page, which is not always 0.
+
 #### `getAllData`:
 - Gets all data for the Wizard as is.
+- Maybe you want to show the user the data before they submit?
+
+#### `clearAllData`:
+- Clear all data so far. This will only clear the saved data.
+- You might be looking for reset?
 - Maybe you want to show the user the data before they submit?
 
