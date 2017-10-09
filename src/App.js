@@ -6,19 +6,33 @@ import InputTwo from './examples/InputTwo.js';
 import InputThree from './examples/InputThree.js';
 
 class App extends Component {
+  constructor() {
+    super();
+
+    this.state = { show: true };
+  }
+
   handleComplete(data) {
     console.log(data);
   }
 
   render() {
     return (
-      <Wizard 
-        onComplete={this.handleComplete}
-      >
-        <InputOne />
-        <InputTwo />
-        <InputThree />
-      </Wizard>
+      <div>
+        { this.state.show &&
+            <Wizard 
+              onComplete={this.handleComplete}
+            >
+              <InputOne />
+              <InputTwo />
+              <InputThree />
+            </Wizard>
+        }
+
+        <button onClick={() => this.setState({ show: !this.state.show })}>
+          Show?
+        </button>
+      </div>
     );
   }
 }

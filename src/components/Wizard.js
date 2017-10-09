@@ -22,6 +22,10 @@ class Wizard extends Component {
     this.jump = this.jump.bind(this);
     this.jumpToIndex = this.jumpToIndex.bind(this);
     this.getAllData = this.getAllData.bind(this);
+    this.clearAllData = this.clearAllData.bind(this);
+    this.reset = this.reset.bind(this);
+    this.allowBack = this.allowBack.bind(this);
+    this.denyBack = this.denyBack.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -37,6 +41,13 @@ class Wizard extends Component {
 
     if ( page !== 0 && prev === false ) {
       this.setState({ prev: true });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.clearOnClose) {
+      sessionStorage.removeItem('Wizard');
+      this.clearAllData();
     }
   }
 
@@ -89,9 +100,29 @@ class Wizard extends Component {
     return returnObj;
   }
 
+  clearAllData() {
+    this.props.children.forEach(child => {
+      const key = child.type.displayName;
+      sessionStorage.removeItem(key);
+    });
+  }
+
+  reset() {
+    const { start } = this.props;
+
+    this.setState({
+      page: start, 
+      prev: !(start === 0), 
+      next: false, 
+      completed: false 
+    });
+  }
+
   handleSubmit() {
     const data = this.getAllData();
     this.setState({ completed: true });
+    this.clearAllData();
+
     return this.props.onComplete(data);
   }
 
@@ -184,7 +215,7 @@ class Wizard extends Component {
       onCompleteText, buttonNavContainerCls, 
       buttonNavContainerStyle } = this.props;
     const { page, completed } = this.state;
-    const { allow, deny, jump, jumpToIndex, getAllData, 
+    const { allow, deny, jump, jumpToIndex, getAllData, clearAllData,
       allowBack, denyBack } = this;
 
     const nav = { 
@@ -193,6 +224,7 @@ class Wizard extends Component {
       jump, 
       jumpToIndex,
       getAllData, 
+      clearAllData,
       allowBack, 
       denyBack 
     };
@@ -225,6 +257,7 @@ Wizard.defaultProps = {
   showTextProgressBar: false,
   showPercentageProgress: false,
   disallowEnterKey: false,
+  clearOnClose: false,
   onCompleteText: 'Thanks for completing!',
   nextButtonText: 'Next',
   prevButtonText: 'Prev',
@@ -240,6 +273,7 @@ Wizard.propTypes = {
   showPercentageProgress: PropTypes.bool,
   onCompleteText: PropTypes.string,
   disallowEnterKey: PropTypes.bool,
+  clearOnClose: PropTypes.bool,
   nextButtonText: PropTypes.string,
   prevButtonText:  PropTypes.string,
   submitButtonText: PropTypes.string,
@@ -263,6 +297,7 @@ Wizard.propTypes = {
   percentageProgressCls: PropTypes.string,
 };
 
-export const PersistedWizard = Persist(Wizard);
 export default Persist(Wizard);
+
+// export const PersistedWizard = Persist(Wizard);
 // export default Wizard;
