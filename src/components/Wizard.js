@@ -107,13 +107,18 @@ class Wizard extends Component {
 
   renderNextOrSubmit() {
     const { next } = this.state;
-    const { nextButtonText, submitButtonText } = this.props;
+    const { nextButtonText, submitButtonText, 
+      nextButtonCls, nextButtonStyle, 
+      submitButtonCls, submitButtonStyle, 
+      buttonCls, buttonStyle } = this.props;
 
     return this.checkIfOnLastPage()
       ? <button 
         type="submit"
         disabled={!next}
         onClick={() => this.handleSubmit()}
+        style={[buttonStyle, submitButtonStyle]}
+        className={[buttonCls, submitButtonCls ]}
       >
         {submitButtonText}
       </button>
@@ -121,6 +126,8 @@ class Wizard extends Component {
         type="button" 
         disabled={!next}
         onClick={() => this.pageNext()}
+        style={[buttonStyle, nextButtonStyle]}
+        className={[buttonCls, nextButtonCls ]}
       >
         {nextButtonText}
       </button>;
@@ -128,13 +135,17 @@ class Wizard extends Component {
 
   renderBack() {
     const { prev } = this.state;
-    const { prevButtonText } = this.props;
+    const { prevButtonText, 
+      prevButtonStyle, prevButtonCls,
+      buttonCls, buttonStyle } = this.props;
 
     return (
       <button 
         type="button" 
         onClick={() => this.pageBack()}
         disabled={!prev}
+        style={[buttonStyle, prevButtonStyle]}
+        className={[buttonCls, prevButtonCls ]}
       >
         { prevButtonText }
       </button>
@@ -143,17 +154,18 @@ class Wizard extends Component {
 
   renderTextProgressBar() {
     const { page } = this.state;
-    const { children } = this.props;
+    const { children, textProgressCls, textProgressStyle } = this.props;
 
     return (
-      <div>
+      <div style={textProgressStyle} className={textProgressCls}>
         Step {page + 1} of {children.length}.
       </div> 
     );
   }
 
   render() {
-    const { children, showTextProgressBar, onCompleteText } = this.props;
+    const { children, showTextProgressBar, onCompleteText,
+      buttonNavContainerCls, buttonNavContainerStyle } = this.props;
     const { page, completed } = this.state;
     const { allow, deny, jump, jumpToIndex, getAllData, 
       allowBack, denyBack } = this;
@@ -174,11 +186,9 @@ class Wizard extends Component {
 
     return (
       <div onKeyPress={(e) => this.handleKeyPress(e)}>
-        <div>
-          {React.cloneElement(children[page], { nav })}
-        </div>
+        {React.cloneElement(children[page], { nav })}
         { showTextProgressBar && this.renderTextProgressBar() }
-        <div style={navigationBtnContainerStyle}>
+        <div style={buttonNavContainerStyle} className={buttonNavContainerCls}>
           {this.renderBack()}
           {this.renderNextOrSubmit()}
         </div>
@@ -188,6 +198,10 @@ class Wizard extends Component {
   }
 }
 
+const navigationBtnContainerStyle = {
+  display: 'flex',
+};
+
 Wizard.defaultProps = {
   start: 0,
   showTextProgressBar: false,
@@ -196,6 +210,7 @@ Wizard.defaultProps = {
   nextButtonText: 'Next',
   prevButtonText: 'Prev',
   submitButtonText: 'Submit',
+  buttonNavContainerStyle: navigationBtnContainerStyle,
 };
 
 Wizard.propTypes = {
@@ -208,11 +223,22 @@ Wizard.propTypes = {
   nextButtonText: PropTypes.string,
   prevButtonText:  PropTypes.string,
   submitButtonText: PropTypes.string,
-};
 
+  containerStyle: PropTypes.object,
+  buttonNavContainerStyle: PropTypes.object,
+  buttonStyle: PropTypes.object,
+  prevButtonStyle: PropTypes.object,
+  nextButtonStyle: PropTypes.object,
+  submitButtonStyle: PropTypes.object,
+  textProgressStyle: PropTypes.object,
 
-const navigationBtnContainerStyle = {
-  display: 'flex',
+  containerCls: PropTypes.string,
+  buttonNavContainerCls: PropTypes.string,
+  buttonCls: PropTypes.string,
+  prevButtonCls: PropTypes.string,
+  nextButtonCls: PropTypes.string,
+  submitButtonCls: PropTypes.string,
+  textProgressCls: PropTypes.string,
 };
 
 export const PersistedWizard = Persist(Wizard);
