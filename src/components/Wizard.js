@@ -117,8 +117,8 @@ class Wizard extends Component {
         type="submit"
         disabled={!next}
         onClick={() => this.handleSubmit()}
-        style={[buttonStyle, submitButtonStyle]}
-        className={[buttonCls, submitButtonCls ]}
+        style={{...buttonStyle, ...submitButtonStyle}}
+        className={`${buttonCls} ${submitButtonCls}`}
       >
         {submitButtonText}
       </button>
@@ -126,8 +126,8 @@ class Wizard extends Component {
         type="button" 
         disabled={!next}
         onClick={() => this.pageNext()}
-        style={[buttonStyle, nextButtonStyle]}
-        className={[buttonCls, nextButtonCls ]}
+        style={{...buttonStyle, ...nextButtonStyle}}
+        className={`${buttonCls} ${nextButtonCls}`}
       >
         {nextButtonText}
       </button>;
@@ -144,8 +144,8 @@ class Wizard extends Component {
         type="button" 
         onClick={() => this.pageBack()}
         disabled={!prev}
-        style={[buttonStyle, prevButtonStyle]}
-        className={[buttonCls, prevButtonCls ]}
+        style={{...buttonStyle, ...prevButtonStyle}}
+        className={`${buttonCls} ${prevButtonCls} `}
       >
         { prevButtonText }
       </button>
