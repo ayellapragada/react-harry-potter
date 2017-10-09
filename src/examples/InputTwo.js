@@ -4,15 +4,9 @@ import { withPersist } from '../components/';
 class InputTwo extends Component {
   constructor(props) {
     super(props);
-    this.state = { input: ""};
+    this.state = { gender: "male"};
     this.props.nav.allow();
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.screen !== nextProps.screen) {
-      this.setState({ input: "" });
-    }
-  } 
 
   changeInput(e) {
     this.setState({ input: e.currentTarget.value });
@@ -20,14 +14,15 @@ class InputTwo extends Component {
 
   render() {
     return (
-      <div>
+      <form>
         Two
+        <br />
         <input 
-          type="text" 
+          type="radio" 
           value={this.state.input} 
           onChange={(e) => this.changeInput(e)} 
         />
-      </div>
+      </form>
     );
   }
 }

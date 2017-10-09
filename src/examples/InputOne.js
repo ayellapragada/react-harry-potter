@@ -4,30 +4,70 @@ import { withPersist } from '../components/';
 class InputOne extends Component {
   constructor(props) {
     super(props);
-    this.state = { input: ""};
-    this.props.nav.allow();
+    this.state = { username: "", password: "", confirm: ""};
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.screen !== nextProps.screen) {
-      this.setState({ input: "" });
-    }
-  } 
+  componentDidUpdate(prevProps, prevState) {
+    const { allow, deny } = this.props.nav;
 
-  changeInput(e) {
-    this.setState({ input: e.currentTarget.value });
+    if (prevState !== this.state) {
+      if (this.complete()) { allow(); }
+      else { deny(); }
+    }
+  }
+
+  changeInput(field) {
+    return e => this.setState({ [field]: e.currentTarget.value });
+  }
+
+  complete() {
+    const { username, password, confirm } = this.state;
+
+    return (username.length > 6 &&
+      password.length > 6 &&
+      confirm.length > 6 &&
+      password === confirm
+    );
   }
 
   render() {
+    const { username, password, confirm } = this.state;
+
     return (
-      <div>
+      <form>
         One
-        <input 
-          type="text" 
-          value={this.state.input} 
-          onChange={(e) => this.changeInput(e)} 
-        />
-      </div>
+        <br />
+        <label>
+          Username:
+          <input 
+            type="text" 
+            value={username} 
+            onChange={this.changeInput('username')} 
+          />
+        </label>
+        <br />
+
+        <label>
+          Password:
+          <input 
+            type="password" 
+            value={password} 
+            onChange={this.changeInput('password')} 
+          />
+        </label>
+        <br />
+
+        <label>
+          Confirm Password:
+          <input 
+            type="password" 
+            value={confirm} 
+            onChange={this.changeInput('confirm')} 
+          />
+        </label>
+        <br />
+
+      </form>
     );
   }
 }

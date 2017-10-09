@@ -264,4 +264,5 @@ Wizard.propTypes = {
 };
 
 export const PersistedWizard = Persist(Wizard);
-export default Wizard;
+export default Persist(Wizard);
+// export default Wizard;

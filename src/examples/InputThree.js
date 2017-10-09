@@ -9,12 +9,6 @@ class InputThree extends Component {
     this.props.nav.allow();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.screen !== nextProps.screen) {
-      this.setState({ input: "" });
-    }
-  } 
-
   changeInput(e) {
     this.setState({ input: e.currentTarget.value });
     this.props.nav.allow();
