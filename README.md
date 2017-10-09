@@ -50,7 +50,7 @@ handleComplete(data) {
     <InputOne>
     <InputTwo>
     <InputThree>
-</Wizard>
+</ Wizard>
 ```
 
 ### Modifying your components to work with the Wizard
