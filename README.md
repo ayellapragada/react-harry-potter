@@ -4,6 +4,11 @@
 >
 > \-- _Harry Potter_
 
+##
+Want to clarify that this is still under construction. The components are
+working but the export process isn't, if you want to still use this currently,
+go ahead! Just keep in mind you'll have to do more work and handle manually
+coping the components.
 
 ## What is this?
 react-harry-potter is a React component library that helps you build a
