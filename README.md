@@ -5,10 +5,8 @@
 > \-- _Harry Potter_
 
 ##
-Want to clarify that this is still under construction. The components are
-working but the export process isn't, if you want to still use this currently,
-go ahead! Just keep in mind you'll have to do more work and handle manually
-coping the components.
+Hey! This works now. Can import and install like any other normal react library.
+Let me know if y'all have issues or ideas on what else you think it should do.
 
 ## What is this?
 react-harry-potter is a React component library that helps you build a
