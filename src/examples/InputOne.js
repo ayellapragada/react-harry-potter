@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withPersist } from '../components/';
+import { withPersist } from '../node_modules';
 
 class InputOne extends Component {
   constructor(props) {

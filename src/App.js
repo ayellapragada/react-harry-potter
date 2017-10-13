@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Wizard from './components/Wizard';
+import Wizard from './node_modules';
 import InputOne from './examples/InputOne.js';
 import InputTwo from './examples/InputTwo.js';
 import InputThree from './examples/InputThree.js';
