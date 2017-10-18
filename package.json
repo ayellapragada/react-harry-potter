@@ -1,6 +1,6 @@
 {
   "name": "react-harry-potter",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "main": "lib/index.js",
   "dependencies": {
     "autoprefixer": "7.1.2",
