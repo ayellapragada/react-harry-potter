@@ -18,7 +18,7 @@ potentially dangerous ones.
 
 You have all the tools, I leave it up to you to use them properly (:
 
-![Demo](wizard.gif)
+![Demo](https://raw.githubusercontent.com/ayellapragada/react-harry-potter/master/wizard.gif)
 
 ## Get Started
 - run 
