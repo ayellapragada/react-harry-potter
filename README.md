@@ -4,10 +4,6 @@
 >
 > \-- _Harry Potter_
 
-##
-Hey! This works now. Can import and install like any other normal react library.
-Let me know if y'all have issues or ideas on what else you think it should do.
-
 ## What is this?
 react-harry-potter is a React component library that helps you build a
 multi-step control flow, otherwise known as a Wizard. 
@@ -21,6 +17,8 @@ all of it's children, you have some easy and required ones, and also some
 potentially dangerous ones. 
 
 You have all the tools, I leave it up to you to use them properly (:
+
+![Demo](wizard.gif)
 
 ## Get Started
 - run 
