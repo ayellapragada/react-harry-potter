@@ -20,6 +20,7 @@ You have all the tools, I leave it up to you to use them properly (:
 
 ![Demo](https://raw.githubusercontent.com/ayellapragada/react-harry-potter/master/wizard.gif)
 
+
 ## Get Started
 - run 
 ```
@@ -120,6 +121,14 @@ class InputOne extends Component {
 }
 
 export default withPersist(InputOne);
+```
+
+## Running the Demo
+
+```
+npm install
+npm start
+open http://localhost:8080
 ```
 
 
@@ -231,4 +240,6 @@ to move on immediately in case of optional fields.
 - Clear all data so far. This will only clear the saved data.
 - You might be looking for reset?
 - Maybe you want to show the user the data before they submit?
+
+
 
